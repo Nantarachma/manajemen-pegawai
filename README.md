@@ -1,58 +1,170 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SiManPeg — Sistem Informasi Manajemen Data Pegawai Berbasis Web
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web untuk mengelola data pegawai secara efisien, dibangun menggunakan **Laravel** dan **SQLite**. Dibuat sebagai project Uji Kompetensi.
 
-## About Laravel
+## 📋 Deskripsi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+SiManPeg adalah sistem informasi berbasis web yang memudahkan admin dalam mengelola data pegawai. Aplikasi ini menyediakan fitur CRUD (Create, Read, Update, Delete) lengkap serta dashboard visual untuk melihat statistik data pegawai melalui grafik interaktif.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Kebutuhan Fungsional
+- **Tambah Data Pegawai** — Admin dapat memasukkan data pegawai baru (NIP, nama, jenis kelamin, tanggal lahir, pendidikan terakhir, jabatan, alamat).
+- **Lihat Data Pegawai** — Menampilkan seluruh data pegawai dalam bentuk tabel.
+- **Edit Data Pegawai** — Admin dapat mengubah data pegawai yang sudah tersimpan.
+- **Hapus Data Pegawai** — Admin dapat menghapus data pegawai dari sistem.
+- **Dashboard Statistik** — Menampilkan 3 grafik visualisasi:
+  - 📊 Grafik perbandingan jumlah pegawai laki-laki dan perempuan (Doughnut Chart)
+  - 📊 Grafik pendidikan terakhir (Bar Chart)
+  - 📊 Grafik sebaran usia pegawai berdasarkan rentang umur (Bar Chart)
 
-## Learning Laravel
+### Kebutuhan Non-Fungsional
+- **Konfirmasi Hapus** — Setiap aksi hapus data akan menampilkan pop-up konfirmasi (SweetAlert2) sebelum data benar-benar dihapus.
+- **Autentikasi Admin** — Sistem dilindungi login. Hanya admin yang sudah login yang bisa mengakses data.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Teknologi yang Digunakan
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Teknologi | Keterangan |
+|-----------|------------|
+| **Laravel** | Framework PHP untuk backend |
+| **SQLite** | Database ringan berbasis file |
+| **Blade** | Template engine bawaan Laravel |
+| **Bootstrap 5** | Framework CSS untuk layout responsif |
+| **Chart.js** | Library JavaScript untuk grafik interaktif |
+| **SweetAlert2** | Library popup konfirmasi yang elegan |
+| **Font Awesome 6** | Library ikon |
+| **Google Fonts (Inter)** | Tipografi modern |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 📁 Struktur Database
 
-## Agentic Development
+### Tabel `users`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint | Primary Key |
+| name | string | Nama user |
+| email | string | Email (unique) |
+| password | string | Password (hashed) |
+| timestamps | | Created at & Updated at |
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Tabel `pegawais`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint | Primary Key |
+| nip | string | Nomor Induk Pegawai (unique) |
+| nama | string | Nama lengkap pegawai |
+| jenis_kelamin | enum | Laki-laki / Perempuan |
+| tanggal_lahir | date | Tanggal lahir pegawai |
+| pendidikan_terakhir | string | SMA/SMK, D3, S1, S2, S3 |
+| jabatan | string | Jabatan pegawai |
+| alamat | text | Alamat lengkap pegawai |
+| timestamps | | Created at & Updated at |
 
-```bash
-composer require laravel/boost --dev
+## 🚀 Cara Instalasi & Menjalankan
 
-php artisan boost:install
+### Prasyarat
+- PHP >= 8.2
+- Composer
+- Node.js & NPM (opsional, untuk asset frontend)
+
+### Langkah-Langkah
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/Nantarachma/manajemen-pegawai.git
+   cd manajemen-pegawai
+   ```
+
+2. **Install dependensi PHP**
+   ```bash
+   composer install
+   ```
+
+3. **Salin file environment**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Generate application key**
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Pastikan konfigurasi database di `.env`**
+   ```
+   DB_CONNECTION=sqlite
+   ```
+
+6. **Jalankan migrasi dan seeder**
+   ```bash
+   php artisan migrate --seed
+   ```
+   > Jika muncul pertanyaan "Would you like to create it?", ketik `yes` untuk membuat file database SQLite.
+
+7. **Jalankan server lokal**
+   ```bash
+   php artisan serve
+   ```
+
+8. **Buka browser**
+   ```
+   http://127.0.0.1:8000
+   ```
+
+## 🔐 Akun Default Admin
+
+| Field | Value |
+|-------|-------|
+| **Email** | `admin@admin.com` |
+| **Password** | `password` |
+
+## 📄 Struktur Halaman
+
+```
+/ .......................... Halaman Login (Landing Page)
+/dashboard ................. Dashboard Statistik Pegawai
+/pegawai ................... Daftar Data Pegawai
+/pegawai/create ............ Form Tambah Pegawai
+/pegawai/{id}/edit ......... Form Edit Pegawai
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## 📂 Struktur File Utama
 
-## Contributing
+```
+manajemen-pegawai/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── AuthController.php          # Login & Logout
+│   │   └── PegawaiController.php       # CRUD & Dashboard
+│   └── Models/
+│       ├── Pegawai.php                 # Model Pegawai
+│       └── User.php                    # Model User
+├── database/
+│   ├── migrations/
+│   │   ├── 2026_04_27_..._create_users_table.php
+│   │   └── 2026_04_28_..._create_pegawais_table.php
+│   └── seeders/
+│       └── DatabaseSeeder.php          # Seeder admin default
+├── resources/views/
+│   ├── auth/
+│   │   └── login.blade.php             # Halaman Login
+│   ├── layouts/
+│   │   └── app.blade.php               # Layout Utama (Sidebar)
+│   └── pegawai/
+│       ├── dashboard.blade.php         # Dashboard & Grafik
+│       ├── index.blade.php             # Tabel Data Pegawai
+│       ├── create.blade.php            # Form Tambah
+│       └── edit.blade.php              # Form Edit
+└── routes/
+    └── web.php                         # Definisi Route
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🎨 Desain UI
 
-## Code of Conduct
+- **Tema**: Putih bersih dengan aksen gradient biru laut (Ocean Blue)
+- **Login Page**: Split-screen — panel kiri gradient biru laut dengan animasi floating bubbles, panel kanan form putih
+- **Dashboard**: Sidebar navigasi, stat cards dengan gradient icon, dan grafik Chart.js
+- **Responsif**: Mendukung tampilan desktop dan mobile (sidebar otomatis collapse)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📝 Lisensi
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Project ini dibuat untuk keperluan **Uji Kompetensi**.
