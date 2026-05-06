@@ -10,17 +10,29 @@ SiManPeg adalah sistem informasi berbasis web yang memudahkan admin dalam mengel
 
 ### Kebutuhan Fungsional
 - **Tambah Data Pegawai** — Admin dapat memasukkan data pegawai baru (NIP, nama, jenis kelamin, tanggal lahir, pendidikan terakhir, jabatan, alamat).
-- **Lihat Data Pegawai** — Menampilkan seluruh data pegawai dalam bentuk tabel.
+- **Lihat Data Pegawai** — Menampilkan data pegawai dalam tabel dengan **pagination** (10 data per halaman).
 - **Edit Data Pegawai** — Admin dapat mengubah data pegawai yang sudah tersimpan.
 - **Hapus Data Pegawai** — Admin dapat menghapus data pegawai dari sistem.
+- **Pencarian & Filter** — Pencarian berdasarkan NIP/nama, filter berdasarkan jabatan, pendidikan, dan jenis kelamin, serta sorting kolom.
+- **Import Data CSV** — Admin dapat mengimpor data pegawai secara massal dari file CSV.
+- **Export Data CSV** — Admin dapat mengekspor seluruh data pegawai ke file CSV.
+- **Audit Log** — Sistem mencatat setiap aktivitas (create, update, delete, import, export) beserta detail perubahannya.
+- **Manajemen Profil Admin** — Admin dapat mengubah nama, email, dan password.
 - **Dashboard Statistik** — Menampilkan 3 grafik visualisasi:
   - 📊 Grafik perbandingan jumlah pegawai laki-laki dan perempuan (Doughnut Chart)
   - 📊 Grafik pendidikan terakhir (Bar Chart)
   - 📊 Grafik sebaran usia pegawai berdasarkan rentang umur (Bar Chart)
 
 ### Kebutuhan Non-Fungsional
-- **Konfirmasi Hapus** — Setiap aksi hapus data akan menampilkan pop-up konfirmasi (SweetAlert2) sebelum data benar-benar dihapus.
+- **Konfirmasi Hapus** — Setiap aksi hapus data menampilkan pop-up konfirmasi (SweetAlert2).
 - **Autentikasi Admin** — Sistem dilindungi login. Hanya admin yang sudah login yang bisa mengakses data.
+- **Policy / Gate** — Kontrol akses per aksi menggunakan Laravel Policy.
+
+### Arsitektur & Kualitas Kode
+- **Form Request** — Validasi terpisah di `PegawaiRequest` (reusable untuk store & update).
+- **Service Layer** — Logika statistik dashboard dipisah ke `PegawaiStatisticsService`.
+- **Mass Assignment Aman** — Menggunakan `$request->only([...])` melalui method `safeData()`.
+- **Automated Tests** — Test suite untuk autentikasi dan CRUD pegawai (14 test cases).
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -59,6 +71,18 @@ SiManPeg adalah sistem informasi berbasis web yang memudahkan admin dalam mengel
 | alamat | text | Alamat lengkap pegawai |
 | timestamps | | Created at & Updated at |
 
+### Tabel `audit_logs`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint | Primary Key |
+| user_id | bigint | FK → users |
+| action | string | create / update / delete / import / export |
+| model_type | string | Nama model (Pegawai) |
+| model_id | bigint | ID record terkait |
+| old_values | json | Nilai sebelum perubahan |
+| new_values | json | Nilai setelah perubahan |
+| ip_address | string | IP address pengguna |
+| timestamps | | Created at & Updated at |
 ## 🚀 Cara Instalasi & Menjalankan
 
 ### Prasyarat
@@ -122,9 +146,13 @@ SiManPeg adalah sistem informasi berbasis web yang memudahkan admin dalam mengel
 ```
 / .......................... Halaman Login (Landing Page)
 /dashboard ................. Dashboard Statistik Pegawai
-/pegawai ................... Daftar Data Pegawai
+/pegawai ................... Daftar Data Pegawai (Search, Filter, Sort, Pagination)
 /pegawai/create ............ Form Tambah Pegawai
 /pegawai/{id}/edit ......... Form Edit Pegawai
+/pegawai-export ............ Download CSV Data Pegawai
+/pegawai-import ............ Form Import CSV
+/audit-log ................. Riwayat Aktivitas (Audit Log)
+/profile ................... Manajemen Profil Admin
 ```
 
 ## 📂 Struktur File Utama
@@ -132,30 +160,56 @@ SiManPeg adalah sistem informasi berbasis web yang memudahkan admin dalam mengel
 ```
 manajemen-pegawai/
 ├── app/
-│   ├── Http/Controllers/
-│   │   ├── AuthController.php          # Login & Logout
-│   │   └── PegawaiController.php       # CRUD & Dashboard
-│   └── Models/
-│       ├── Pegawai.php                 # Model Pegawai
-│       └── User.php                    # Model User
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.php          # Login & Logout
+│   │   │   ├── PegawaiController.php       # CRUD, Dashboard, Import/Export
+│   │   │   ├── ProfileController.php       # Manajemen Profil
+│   │   │   └── AuditLogController.php      # Riwayat Aktivitas
+│   │   └── Requests/
+│   │       └── PegawaiRequest.php          # Form Request Validation
+│   ├── Models/
+│   │   ├── Pegawai.php
+│   │   ├── User.php
+│   │   └── AuditLog.php
+│   ├── Policies/
+│   │   └── PegawaiPolicy.php              # Authorization Gate
+│   ├── Providers/
+│   │   └── AppServiceProvider.php         # Policy Registration
+│   └── Services/
+│       └── PegawaiStatisticsService.php   # Dashboard Logic
 ├── database/
 │   ├── migrations/
-│   │   ├── 2026_04_27_..._create_users_table.php
-│   │   └── 2026_04_28_..._create_pegawais_table.php
+│   │   ├── ..._create_users_table.php
+│   │   ├── ..._create_pegawais_table.php
+│   │   └── ..._create_audit_logs_table.php
 │   └── seeders/
-│       └── DatabaseSeeder.php          # Seeder admin default
+│       └── DatabaseSeeder.php
 ├── resources/views/
 │   ├── auth/
-│   │   └── login.blade.php             # Halaman Login
+│   │   ├── login.blade.php
+│   │   └── profile.blade.php
+│   ├── audit/
+│   │   └── index.blade.php
 │   ├── layouts/
-│   │   └── app.blade.php               # Layout Utama (Sidebar)
+│   │   └── app.blade.php
 │   └── pegawai/
-│       ├── dashboard.blade.php         # Dashboard & Grafik
-│       ├── index.blade.php             # Tabel Data Pegawai
-│       ├── create.blade.php            # Form Tambah
-│       └── edit.blade.php              # Form Edit
-└── routes/
-    └── web.php                         # Definisi Route
+│       ├── dashboard.blade.php
+│       ├── index.blade.php
+│       ├── create.blade.php
+│       ├── edit.blade.php
+│       └── import.blade.php
+├── routes/
+│   └── web.php
+└── tests/Feature/
+    ├── AuthTest.php                       # 5 test cases
+    └── PegawaiTest.php                    # 11 test cases
+```
+
+## 🧪 Menjalankan Tests
+
+```bash
+php artisan test
 ```
 
 ## 🎨 Desain UI

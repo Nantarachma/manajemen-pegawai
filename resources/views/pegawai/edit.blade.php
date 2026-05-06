@@ -4,17 +4,17 @@
 @section('page-subtitle', 'Perbarui data pegawai yang sudah ada')
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card-modern">
-            <div class="card-header d-flex align-items-center gap-2">
-                <i class="fas fa-user-edit" style="color: var(--accent);"></i>
-                <h5>Edit Data: {{ $pegawai->nama }}</h5>
+<div class="flex justify-center">
+    <div class="w-full max-w-3xl">
+        <div class="bg-white border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+            <div class="flex items-center gap-2 px-6 py-5 border-b border-border">
+                <i class="fas fa-user-edit text-ocean-mid"></i>
+                <h5 class="text-base font-semibold text-text-primary">Edit Data: {{ $pegawai->nama }}</h5>
             </div>
-            <div class="card-body">
+            <div class="p-6">
                 @if ($errors->any())
-                    <div class="alert-modern danger mb-3">
-                        <i class="fas fa-exclamation-circle"></i>
+                    <div class="flex items-start gap-2.5 px-5 py-3.5 rounded-[10px] bg-red-50 text-red-600 border border-red-200 text-sm mb-4 animate-slideDown">
+                        <i class="fas fa-exclamation-circle mt-0.5"></i>
                         <div>
                             @foreach ($errors->all() as $error)
                                 <div>{{ $error }}</div>
@@ -23,67 +23,67 @@
                     </div>
                 @endif
 
-                <form action="{{ route('pegawai.update', $pegawai->id) }}" method="POST" class="form-modern">
+                <form action="{{ route('pegawai.update', $pegawai->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="nip" class="form-label">NIP</label>
-                            <input type="text" class="form-control" id="nip" name="nip" value="{{ old('nip', $pegawai->nip) }}" required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="nip" class="block text-[13px] font-semibold text-text-secondary mb-1.5">NIP</label>
+                            <input type="text" id="nip" name="nip" value="{{ old('nip', $pegawai->nip) }}" required class="w-full px-4 py-3 bg-bg border-[1.5px] border-border rounded-[10px] text-sm text-text-primary focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
                         </div>
-                        <div class="col-md-6">
-                            <label for="nama" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama', $pegawai->nama) }}" required>
+                        <div>
+                            <label for="nama" class="block text-[13px] font-semibold text-text-secondary mb-1.5">Nama Lengkap</label>
+                            <input type="text" id="nama" name="nama" value="{{ old('nama', $pegawai->nama) }}" required class="w-full px-4 py-3 bg-bg border-[1.5px] border-border rounded-[10px] text-sm text-text-primary focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
                         </div>
                     </div>
 
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <label class="form-label">Jenis Kelamin</label>
-                            <div class="d-flex gap-4 mt-1">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="jenis_kelamin" id="jkL" value="Laki-laki" {{ old('jenis_kelamin', $pegawai->jenis_kelamin) == 'Laki-laki' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="jkL">Laki-laki</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="jenis_kelamin" id="jkP" value="Perempuan" {{ old('jenis_kelamin', $pegawai->jenis_kelamin) == 'Perempuan' ? 'checked' : '' }} required>
-                                    <label class="form-check-label" for="jkP">Perempuan</label>
-                                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-[13px] font-semibold text-text-secondary mb-1.5">Jenis Kelamin</label>
+                            <div class="flex gap-6 mt-1">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="jenis_kelamin" id="jkL" value="Laki-laki" {{ old('jenis_kelamin', $pegawai->jenis_kelamin) == 'Laki-laki' ? 'checked' : '' }} required class="w-4 h-4 accent-ocean-mid">
+                                    <span class="text-sm text-text-primary">Laki-laki</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="jenis_kelamin" id="jkP" value="Perempuan" {{ old('jenis_kelamin', $pegawai->jenis_kelamin) == 'Perempuan' ? 'checked' : '' }} required class="w-4 h-4 accent-ocean-mid">
+                                    <span class="text-sm text-text-primary">Perempuan</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $pegawai->tanggal_lahir) }}" required>
+                        <div>
+                            <label for="tanggal_lahir" class="block text-[13px] font-semibold text-text-secondary mb-1.5">Tanggal Lahir</label>
+                            <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $pegawai->tanggal_lahir) }}" required class="w-full px-4 py-3 bg-bg border-[1.5px] border-border rounded-[10px] text-sm text-text-primary focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
                         </div>
                     </div>
 
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <label for="pendidikan_terakhir" class="form-label">Pendidikan Terakhir</label>
-                            <select class="form-select" id="pendidikan_terakhir" name="pendidikan_terakhir" required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="pendidikan_terakhir" class="block text-[13px] font-semibold text-text-secondary mb-1.5">Pendidikan Terakhir</label>
+                            <select id="pendidikan_terakhir" name="pendidikan_terakhir" required class="w-full px-4 py-3 bg-bg border-[1.5px] border-border rounded-[10px] text-sm text-text-primary focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
                                 <option value="">Pilih Pendidikan...</option>
                                 @foreach(['SMA/SMK', 'D3', 'S1', 'S2', 'S3'] as $edu)
                                     <option value="{{ $edu }}" {{ old('pendidikan_terakhir', $pegawai->pendidikan_terakhir) == $edu ? 'selected' : '' }}>{{ $edu }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6">
-                            <label for="jabatan" class="form-label">Jabatan</label>
-                            <input type="text" class="form-control" id="jabatan" name="jabatan" value="{{ old('jabatan', $pegawai->jabatan) }}" required>
+                        <div>
+                            <label for="jabatan" class="block text-[13px] font-semibold text-text-secondary mb-1.5">Jabatan</label>
+                            <input type="text" id="jabatan" name="jabatan" value="{{ old('jabatan', $pegawai->jabatan) }}" required class="w-full px-4 py-3 bg-bg border-[1.5px] border-border rounded-[10px] text-sm text-text-primary focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
                         </div>
                     </div>
 
-                    <div class="mt-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat', $pegawai->alamat) }}</textarea>
+                    <div class="mt-4">
+                        <label for="alamat" class="block text-[13px] font-semibold text-text-secondary mb-1.5">Alamat</label>
+                        <textarea id="alamat" name="alamat" rows="3" required class="w-full px-4 py-3 bg-bg border-[1.5px] border-border rounded-[10px] text-sm text-text-primary focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all resize-y">{{ old('alamat', $pegawai->alamat) }}</textarea>
                     </div>
 
-                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3" style="border-top: 1px solid var(--border);">
-                        <a href="{{ route('pegawai.index') }}" class="btn btn-light" style="border-radius: var(--radius-sm); font-weight: 500; padding: 10px 20px;">
-                            <i class="fas fa-arrow-left me-1"></i> Kembali
+                    <div class="flex justify-end gap-2 mt-6 pt-4 border-t border-border">
+                        <a href="{{ route('pegawai.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-text-secondary border-[1.5px] border-border rounded-[10px] font-medium text-sm no-underline transition-all hover:bg-gray-50">
+                            <i class="fas fa-arrow-left"></i> Kembali
                         </a>
-                        <button type="submit" class="btn-modern-primary">
+                        <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-ocean-dark to-ocean-mid text-white rounded-[10px] font-semibold text-sm border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,119,182,0.3)]">
                             <i class="fas fa-save"></i> Simpan Perubahan
                         </button>
                     </div>
