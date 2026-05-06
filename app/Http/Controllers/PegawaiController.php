@@ -25,7 +25,7 @@ class PegawaiController extends Controller
     public function dashboard()
     {
         $data = $this->statisticsService->getDashboardData();
-        return view('pegawai.dashboard', $data);
+        return view('dashboard.index', $data);
     }
 
     /**

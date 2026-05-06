@@ -6,19 +6,27 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    /* Genesis Design System — Typography */
+    --font-display: 'General Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    --color-ocean-dark: #0077b6;
-    --color-ocean-mid: #00b4d8;
-    --color-ocean-light: #48cae4;
-    --color-ocean-pale: #90e0ef;
-    --color-ocean-wash: #caf0f8;
-    --color-surface: #ffffff;
-    --color-bg: #f4f9fc;
-    --color-text-primary: #1a2332;
-    --color-text-secondary: #4a5568;
-    --color-text-muted: #94a3b8;
-    --color-border: #e8eff5;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Genesis Design System — Colors */
+    --color-primary: #6366F1;
+    --color-primary-hover: #4F46E5;
+    --color-primary-light: #818CF8;
+    --color-primary-wash: #EEF2FF;
+    --color-primary-pale: #C7D2FE;
+    --color-surface: #FFFFFF;
+    --color-bg: #FAFAFA;
+    --color-text-primary: #0A0A0A;
+    --color-text-secondary: #6B6B6B;
+    --color-text-muted: #9C9C9C;
+    --color-border: #E8E8EC;
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
 }
 
 /* ========== KEYFRAMES ========== */
@@ -46,6 +54,6 @@
 /* ========== CHART HEADER GRADIENT ========== */
 .chart-header-bar {
     height: 4px;
-    background: linear-gradient(90deg, var(--color-ocean-dark), var(--color-ocean-mid), var(--color-ocean-light));
+    background: linear-gradient(90deg, var(--color-primary-hover), var(--color-primary), var(--color-primary-light));
     border-radius: 4px 4px 0 0;
 }

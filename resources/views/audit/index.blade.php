@@ -4,17 +4,17 @@
 @section('page-subtitle', 'Pencatatan setiap perubahan data dalam sistem')
 
 @section('content')
-<div class="bg-white border border-border rounded-2xl shadow-sm mb-3 hover:shadow-md transition-shadow">
+<div class="bg-white border border-border rounded-xl mb-3 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-200">
     <div class="p-4">
         <form method="GET" action="{{ route('audit.index') }}">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
                 <div class="md:col-span-4">
                     <label class="block text-xs font-semibold text-text-muted mb-1.5">Cari pengguna</label>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pengguna..." class="w-full px-3.5 py-2.5 bg-bg border-[1.5px] border-border rounded-[10px] text-sm focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama pengguna..." class="w-full px-3.5 py-2.5 bg-white border border-border rounded-md text-sm focus:border-primary focus:ring-[3px] focus:ring-primary/10 outline-none transition-all">
                 </div>
                 <div class="md:col-span-3">
                     <label class="block text-xs font-semibold text-text-muted mb-1.5">Jenis Aksi</label>
-                    <select name="action" class="w-full px-3.5 py-2.5 bg-bg border-[1.5px] border-border rounded-[10px] text-sm focus:border-ocean-mid focus:ring-2 focus:ring-ocean-mid/10 focus:bg-white outline-none transition-all">
+                    <select name="action" class="w-full px-3.5 py-2.5 bg-white border border-border rounded-md text-sm focus:border-primary focus:ring-[3px] focus:ring-primary/10 outline-none transition-all">
                         <option value="">Semua</option>
                         @foreach(['create', 'update', 'delete', 'import', 'export'] as $act)
                             <option value="{{ $act }}" {{ request('action') == $act ? 'selected' : '' }}>{{ ucfirst($act) }}</option>
@@ -22,10 +22,10 @@
                     </select>
                 </div>
                 <div class="md:col-span-3 flex gap-2">
-                    <button type="submit" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-ocean-dark to-ocean-mid text-white rounded-[10px] font-semibold text-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,119,182,0.3)]">
+                    <button type="submit" class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-md font-medium text-sm cursor-pointer transition-all duration-200 hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(99,102,241,0.35)]">
                         <i class="fas fa-filter"></i> Filter
                     </button>
-                    <a href="{{ route('audit.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-text-secondary border-[1.5px] border-border rounded-[10px] font-medium text-sm no-underline transition-all hover:bg-gray-50">
+                    <a href="{{ route('audit.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-transparent text-text-secondary border border-border rounded-md font-medium text-sm no-underline transition-all hover:bg-gray-50">
                         <i class="fas fa-times"></i> Reset
                     </a>
                 </div>
@@ -34,10 +34,10 @@
     </div>
 </div>
 
-<div class="bg-white border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+<div class="bg-white border border-border rounded-xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-200 overflow-hidden">
     <div class="flex items-center gap-2 px-6 py-5 border-b border-border">
-        <i class="fas fa-history text-ocean-mid"></i>
-        <h5 class="text-base font-semibold text-text-primary">Log Aktivitas</h5>
+        <i class="fas fa-history text-primary"></i>
+        <h5 class="font-display text-base font-semibold text-text-primary">Log Aktivitas</h5>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full border-separate border-spacing-0">
@@ -63,7 +63,7 @@
                             @php
                                 $badgeClasses = [
                                     'create' => 'bg-emerald-50 text-emerald-600',
-                                    'update' => 'bg-ocean-wash text-ocean-dark',
+                                    'update' => 'bg-primary-wash text-primary',
                                     'delete' => 'bg-red-50 text-red-600',
                                     'import' => 'bg-purple-50 text-purple-600',
                                     'export' => 'bg-amber-50 text-amber-600',
@@ -74,7 +74,7 @@
                             </span>
                         </td>
                         <td class="px-4 py-4 text-sm border-b border-border align-middle">{{ class_basename($log->model_type) }}</td>
-                        <td class="px-4 py-4 text-sm border-b border-border align-middle"><code>{{ $log->model_id ?? '-' }}</code></td>
+                        <td class="px-4 py-4 text-sm border-b border-border align-middle"><code class="font-mono">{{ $log->model_id ?? '-' }}</code></td>
                         <td class="px-4 py-4 text-sm border-b border-border align-middle pr-6 max-w-[300px]">
                             @if($log->action === 'update' && $log->old_values && $log->new_values)
                                 @php
@@ -105,8 +105,8 @@
                     <tr>
                         <td colspan="6">
                             <div class="text-center py-16">
-                                <i class="fas fa-clipboard-list text-5xl text-ocean-pale mb-4 block"></i>
-                                <h5 class="text-base font-semibold text-text-secondary mb-1">Belum Ada Riwayat</h5>
+                                <i class="fas fa-clipboard-list text-5xl text-primary-pale mb-4 block"></i>
+                                <h5 class="font-display text-base font-semibold text-text-secondary mb-1">Belum Ada Riwayat</h5>
                                 <p class="text-sm text-text-muted">Aktivitas akan dicatat secara otomatis</p>
                             </div>
                         </td>
