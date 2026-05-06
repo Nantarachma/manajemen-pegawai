@@ -29,10 +29,9 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
         ]);
 
-        // 100 Data Pegawai
+        // 50 Data Pegawai
         $this->call([
             PegawaiSeeder::class,
-            PegawaiSeeder2::class,
         ]);
     }
 }
